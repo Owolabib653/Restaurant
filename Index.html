@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sisl Taste Hub - Authentic Nigerian Cuisine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a5f3c;
+            --gold: #d4af37;
+            --dark: #1a1a1a;
+            --light: #f8f5f0;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background: rgba(26, 26, 26, 0.95);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--gold);
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 1px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            position: relative;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--gold);
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .mobile-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .mobile-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            padding-top: 80px;
+        }
+
+        .mobile-nav-overlay.active {
+            right: 0;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 2rem;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: color 0.3s;
+            display: block;
+        }
+
+        .mobile-nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .mobile-nav-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                linear-gradient(135deg, var(--primary) 0%, #0d3d25 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '🥙';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.05;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.6rem;
+            margin-bottom: 2.5rem;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 2px;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3.5rem;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            border: 2px solid var(--gold);
+            font-family: 'Arial', sans-serif;
+            cursor: pointer;
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 8rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-image {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            height: 550px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: var(--white);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-image:hover {
+            transform: scale(1.02);
+        }
+
+        .about-content h2 {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            margin-bottom: 1.8rem;
+            line-height: 2;
+            color: #555;
+        }
+
+        /* Featured Dishes */
+        .featured {
+            background: var(--white);
+            padding: 6rem 2rem;
+        }
+
+        .featured h2 {
+            text-align: center;
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 4rem;
+            letter-spacing: 3px;
+        }
+
+        .dishes-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+        }
+
+        .dish-card {
+            background: var(--light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .dish-image {
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .dish-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dish-info {
+            padding: 2rem;
+        }
+
+        .dish-info h3 {
+            font-size: 1.9rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .dish-info p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .dish-price {
+            font-size: 1.6rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Menu Page */
+        .menu-page {
+            padding: 8rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-page h1 {
+            font-size: 4rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
+        }
+
+        .menu-intro {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .menu-category {
+            margin-bottom: 6rem;
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .category-header h2 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        .category-header p {
+            color: #666;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .menu-item {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 8px;
+            border-left: 5px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item h3 {
+            font-size: 1.6rem;
+            color: var(--primary);
+        }
+
+        .menu-item .price {
+            font-size: 1.4rem;
+            color: var(--gold);
+            font-weight: bold;
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+
+        .menu-item p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Gallery Page */
+        .gallery-page {
+            padding: 8rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-page h1 {
+            font-size: 4rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
+        }
+
+        .gallery-intro {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 5rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--white);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            padding: 2.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .gallery-overlay p {
+            color: var(--white);
+            font-size: 1rem;
+        }
+
+        /* Reservation Page */
+        .reservation-page {
+            padding: 8rem 2rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .reservation-page h1 {
+            font-size: 4rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
+        }
+
+        .reservation-intro {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        .reservation-form {
+            background: var(--white);
+            padding: 4rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: 'Georgia', serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1.4rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .submit-button:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Contact Page */
+        .contact-page {
+            padding: 8rem 2rem 4rem;
+        }
+
+        .contact-page h1 {
+            font-size: 4rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: 3px;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            background: var(--white);
+            padding: 4rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info h2 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-item {
+            margin-bottom: 2.5rem;
+        }
+
+        .info-item h3 {
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .info-item p {
+            color: #666;
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        .map-container {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: 600px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-section a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .contact-container,
+            .about-section {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1.3rem;
+            }
+
+            .menu-page h1,
+            .gallery-page h1,
+            .reservation-page h1,
+            .contact-page h1 {
+                font-size: 2.8rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content h2 {
+                font-size: 2.5rem;
+            }
+
+            .featured h2 {
+                font-size: 2.5rem;
+            }
+
+            .reservation-form {
+                padding: 2rem;
+            }
+
+            .contact-info {
+                padding: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="showPage('home')">SISL TASTE HUB</div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('home')">HOME</a></li>
+                <li><a onclick="showPage('menu')">MENU</a></li>
+                <li><a onclick="showPage('gallery')">GALLERY</a></li>
+                <li><a onclick="showPage('reservation')">RESERVATIONS</a></li>
+                <li><a onclick="showPage('contact')">CONTACT</a></li>
+            </ul>
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <ul class="mobile-nav-links">
+            <li><a onclick="showPage('home'); closeMobileMenu();">HOME</a></li>
+            <li><a onclick="showPage('menu'); closeMobileMenu();">MENU</a></li>
+            <li><a onclick="showPage('gallery'); closeMobileMenu();">GALLERY</a></li>
+            <li><a onclick="showPage('reservation'); closeMobileMenu();">RESERVATIONS</a></li>
+            <li><a onclick="showPage('contact'); closeMobileMenu();">CONTACT</a></li>
+        </ul>
+    </div>
+
+    <!-- Mobile Navigation Backdrop -->
+    <div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="closeMobileMenu()"></div>
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>SISL TASTE HUB</h1>
+                <p>Experience delicious dishes prepared with passion.</p>
+                <a class="cta-button" onclick="showPage('menu')">EXPLORE MENU</a>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <div class="about-image">
+                <img src="https://drive.google.com/thumbnail?id=1cf8r61L2Dm1fNkAJpGNjr8BW5TSzj809&sz=s1000" alt="About Us">
+            </div>
+
+            <div class="about-content">
+                <h2>Who We Are</h2>
+                <p>
+                    Sisl Taste Hub has been serving freshly prepared meals since 2010. Sisl Taste Hub is more than just an eatery—it is
+                    a vibrant destination where flavour, comfort, and creativity come alive on every plate. Designed for food lovers and
+                    everyday customers seeking something unforgettable, Sisl Taste Hub blends mouth-watering meals with a warm, inviting
+                    atmosphere that makes you feel at home from the moment you walk in.
+                </p>
+                <p>At Sisl Taste Hub, we believe food should never be boring. That's why our menu is packed with exciting
+                    choices—carefully prepared dishes that celebrate rich local flavours, fresh ingredients, and the joy of good eating.
+                    Every meal is crafted with passion, whether you're grabbing a quick bite, enjoying lunch with friends, or treating
+                    yourself to something delicious after a long day. We aim to serve food that doesn't just satisfy hunger but leaves
+                    you smiling, craving more, and remembering the taste long after you leave.
+                </p>
+                <p>Our space is welcoming, our service is friendly, and our food is made with love. From the sizzle in the kitchen to
+                    the aroma that fills the air, everything at Sisl Taste Hub is designed to excite your senses. We're committed to
+                    providing great value, consistent quality, and an experience that keeps you coming back.
+                </p>
+                <p>
+                    Sisl Taste Hub is not just an eatery—it's a flavour-packed hub where good food meets good vibes. When you're hungry
+                    for taste, freshness, and comfort, we're the perfect place to be. Step in today and let your taste buds find their
+                    new favourite home.
+                </p>
+            </div>
+        </section>
+
+        <section class="featured">
+            <h2>Signature Dishes</h2>
+            <div class="dishes-grid">
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="https://drive.google.com/thumbnail?id=1R5zA0VClVfdcpyDmDvNTUcOrPXogmCmr&sz=s1000" alt="Jollof Royale">
+                    </div>
+                    <div class="dish-info">
+                        <h3>Jollof Royale</h3>
+                        <p>Premium Nigerian Jollof rice slow-cooked with smoked fish, prawns, and aromatic spices. Served with grilled plantains.</p>
+                        <div class="dish-price">₦15,000</div>
+                    </div>
+                </div>
+
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="https://drive.google.com/thumbnail?id=1SPkmyvRZQ2hsYr7xOdFjRDwwYgFMm-yh&sz=s1000" alt="Egusi Deluxe">
+                    </div>
+                    <div class="dish-info">
+                        <h3>Egusi Deluxe</h3>
+                        <p>Rich melon seed soup with assorted meats, stockfish, and fresh vegetables. Paired with pounded yam or eba.</p>
+                        <div class="dish-price">₦18,000</div>
+                    </div>
+                </div>
+
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="https://drive.google.com/thumbnail?id=1GHi6YPmyPfDigtrNMnxpft8GOeO1MkTa&sz=s1000" alt="Suya Platter">
+                    </div>
+                    <div class="dish-info">
+                        <h3>Suya Platter</h3>
+                        <p>Premium beef skewers marinated in our secret spice blend, grilled to perfection. Served with fresh vegetables and yaji.</p>
+                        <div class="dish-price">₦12,500</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MENU PAGE -->
+    <div id="menu" class="page">
+        <div class="menu-page">
+            <h1>Our Menu</h1>
+            <p class="menu-intro">Explore our carefully curated selection of authentic Nigerian dishes, crafted with premium ingredients and traditional recipes.</p>
+
+            <!-- Appetizers -->
+            <div class="menu-category">
+                <div class="category-header">
+                    <h2>Appetizers</h2>
+                    <p>Start your culinary journey</p>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Peppered Snails</h3>
+                            <span class="price">₦10,000</span>
+                        </div>
+                        <p>Giant snails sautéed in spicy pepper sauce with onions and aromatic herbs. A true West African delicacy.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Asun (Spicy Goat Meat)</h3>
+                            <span class="price">₦8,500</span>
+                        </div>
+                        <p>Grilled goat meat marinated in peppers and traditional spices. A Yoruba street food favorite elevated.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Moin Moin</h3>
+                            <span class="price">₦3,500</span>
+                        </div>
+                        <p>Steamed bean pudding with boiled eggs and smoked fish. Smooth, savory perfection.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Akara (Bean Fritters)</h3>
+                            <span class="price">₦2,500</span>
+                        </div>
+                        <p>Crispy fried bean cakes served with pepper sauce. A breakfast classic reimagined.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Soups -->
+            <div class="menu-category">
+                <div class="category-header">
+                    <h2>Traditional Soups</h2>
+                    <p>Hearty and soul-warming</p>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Egusi Soup</h3>
+                            <span class="price">₦18,000</span>
+                        </div>
+                        <p>Rich melon seed soup with assorted meats, stockfish, and fresh vegetables. Served with your choice of pounded yam, eba, or fufu.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Banga Soup</h3>
+                            <span class="price">₦16,500</span>
+                        </div>
+                        <p>Palm nut soup from the Niger Delta with catfish and periwinkles. Served with starch for an authentic experience.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Ofe Nsala (White Soup)</h3>
+                            <span class="price">₦17,000</span>
+                        </div>
+                        <p>Delicate Igbo soup made with catfish, uziza seeds, and utazi leaves. Light yet incredibly flavorful.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Efo Riro</h3>
+                            <span class="price">₦15,500</span>
+                        </div>
+                        <p>Yoruba spinach stew with assorted meats and locust beans. Nutritious and delicious.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Ogbono Soup</h3>
+                            <span class="price">₦16,000</span>
+                        </div>
+                        <p>Draw soup made with wild mango seeds, stockfish, and beef. Silky smooth texture.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Edikang Ikong</h3>
+                            <span class="price">₦19,000</span>
+                        </div>
+                        <p>Premium vegetable soup from Calabar with waterleaf, fluted pumpkin leaves, and periwinkles.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Courses -->
+            <div class="menu-category">
+                <div class="category-header">
+                    <h2>Main Courses</h2>
+                    <p>Signature entrées</p>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Jollof Royale</h3>
+                            <span class="price">₦15,000</span>
+                        </div>
+                        <p>Premium Nigerian Jollof rice slow-cooked with smoked fish, prawns, and grilled plantains. The ultimate Jollof experience.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Grilled Croaker Fish</h3>
+                            <span class="price">₦20,000</span>
+                        </div>
+                        <p>Whole croaker seasoned with Nigerian spices, grilled to perfection, and served with spicy pepper sauce.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Suya Platter</h3>
+                            <span class="price">₦12,500</span>
+                        </div>
+                        <p>Premium beef skewers marinated in our secret spice blend, served with yaji powder and fresh vegetables.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Grilled Chicken</h3>
+                            <span class="price">₦11,000</span>
+                        </div>
+                        <p>Whole chicken marinated in Nigerian spices and grilled to smoky perfection. Served with sides.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Gizdodo</h3>
+                            <span class="price">₦9,000</span>
+                        </div>
+                        <p>Gizzard and plantain stir-fry in rich pepper sauce. A Lagos party favorite.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Ofada Rice & Ayamase</h3>
+                            <span class="price">₦14,000</span>
+                        </div>
+                        <p>Local rice served with green pepper sauce, assorted meats, and boiled eggs. An indigenous delight.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sides -->
+            <div class="menu-category">
+                <div class="category-header">
+                    <h2>Sides</h2>
+                    <p>Perfect accompaniments</p>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Pounded Yam</h3>
+                            <span class="price">₦4,000</span>
+                        </div>
+                        <p>Smooth, stretchy yam paste perfect for pairing with soups. Hand-pounded to perfection.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Fried Plantain (Dodo)</h3>
+                            <span class="price">₦3,000</span>
+                        </div>
+                        <p>Sweet ripe plantains fried to golden, caramelized perfection.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Eba</h3>
+                            <span class="price">₦2,500</span>
+                        </div>
+                        <p>Garri swallow, a classic Nigerian staple made from cassava.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Fried Yam</h3>
+                            <span class="price">₦3,500</span>
+                        </div>
+                        <p>Crispy yam chips served with spicy pepper sauce for dipping.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drinks -->
+            <div class="menu-category">
+                <div class="category-header">
+                    <h2>Beverages</h2>
+                    <p>Refresh and complement your meal</p>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Chapman</h3>
+                            <span class="price">₦2,500</span>
+                        </div>
+                        <p>Nigerian signature cocktail with Fanta, Sprite, grenadine, Angostura bitters, and fresh fruits.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Zobo (Hibiscus)</h3>
+                            <span class="price">₦2,000</span>
+                        </div>
+                        <p>Refreshing hibiscus flower drink infused with ginger and pineapple.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Palm Wine</h3>
+                            <span class="price">₦3,500</span>
+                        </div>
+                        <p>Fresh palm wine tapped daily. Sweet, naturally fermented tradition.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Fresh Fruit Juice</h3>
+                            <span class="price">₦2,500</span>
+                        </div>
+                        <p>Choice of pineapple, orange, watermelon, or mango. Freshly squeezed daily.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Nigerian Craft Beer</h3>
+                            <span class="price">₦3,000</span>
+                        </div>
+                        <p>Selection of locally brewed craft beers celebrating Nigerian flavors.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desserts -->
+            <div class="menu-category">
+                <div class="category-header">
+                    <h2>Desserts</h2>
+                    <p>Sweet endings</p>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Puff Puff</h3>
+                            <span class="price">₦2,000</span>
+                        </div>
+                        <p>Sweet fried dough balls dusted with powdered sugar. Warm and fluffy.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Chin Chin</h3>
+                            <span class="price">₦2,500</span>
+                        </div>
+                        <p>Crunchy fried pastry bites, perfectly sweetened. Addictively crispy.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Coconut Candy</h3>
+                            <span class="price">₦1,500</span>
+                        </div>
+                        <p>Traditional coconut sweet treats. Chewy and caramelized.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h3>Fruit Platter</h3>
+                            <span class="price">₦4,000</span>
+                        </div>
+                        <p>Seasonal tropical fruits including pineapple, watermelon, papaya, and more.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GALLERY PAGE -->
+    <div id="gallery" class="page">
+        <div class="gallery-page">
+            <h1>Gallery</h1>
+            <p class="gallery-intro">A visual journey through our culinary creations and dining experience</p>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1R5zA0VClVfdcpyDmDvNTUcOrPXogmCmr&sz=s1000" alt="Jollof Royale">
+                    <div class="gallery-overlay">
+                        <h3>Jollof Royale</h3>
+                        <p>Our signature dish in all its glory</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1SPkmyvRZQ2hsYr7xOdFjRDwwYgFMm-yh&sz=s800" alt="Egusi Soup">
+                    <div class="gallery-overlay">
+                        <h3>Egusi Soup</h3>
+                        <p>Rich, authentic, unforgettable</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1GHi6YPmyPfDigtrNMnxpft8GOeO1MkTa&sz=s800" alt="Suya">
+                    <div class="gallery-overlay">
+                        <h3>Suya Perfection</h3>
+                        <p>Grilled to smoky perfection</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1rNYdhgy3yn9QPbpS2XXcM2pJCgWy_tVD&sz=s1000" alt="Grilled Croaker">
+                    <div class="gallery-overlay">
+                        <h3>Grilled Croaker</h3>
+                        <p>Fresh from the coast</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=14dyBqVmhV9APS5C-eCbI4CDD-g9f__WP&sz=s1000" alt="Banga Soup">
+                    <div class="gallery-overlay">
+                        <h3>Banga Soup</h3>
+                        <p>Delta heritage in a bowl</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1nlm160svHKGUp-dRCJ0a7MqtPbDkJ12i&sz=s1000" alt="Peppered Snails">
+                    <div class="gallery-overlay">
+                        <h3>Peppered Snails</h3>
+                        <p>A true delicacy</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1c__EsD1TwYBQ5KhmgOvaCLlsNPwp3_K_&sz=s1000" alt="Dodo">
+                    <div class="gallery-overlay">
+                        <h3>Dodo</h3>
+                        <p>Golden fried plantains</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1Ov_xGkO2u1_OVYRTXiA6Wv9byVU05PX1&sz=s1000" alt="Chapman">
+                    <div class="gallery-overlay">
+                        <h3>Chapman</h3>
+                        <p>Refreshing Nigerian classic</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://drive.google.com/thumbnail?id=1jMsMw-zDvE7iKyJgxmeyclfARHmfmWNH&sz=s1000" alt="Ambiance">
+                    <div class="gallery-overlay">
+                        <h3>Elegant Ambiance</h3>
+                        <p>Fine dining atmosphere</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESERVATION PAGE -->
+    <div id="reservation" class="page">
+        <div class="reservation-page">
+            <h1>Make a Reservation</h1>
+            <p class="reservation-intro">Book your table and experience the finest Nigerian cuisine</p>
+
+            <div id="successMessage" class="success-message" style="display: none;">
+                Thank you for your reservation! We'll send you a confirmation shortly.
+            </div>
+
+            <form class="reservation-form" onsubmit="handleReservation(event)">
+                <form action="connect.php" method="post">
+                <div class="form">
+                    <div class="form-group">
+                        <label for="first-name">First Name *</label>
+                        <input type="text" id="first-name" required  name="first-Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name *</label>
+                        <input type="text" id="last-name" required  name="last-name">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" required  name="Phone Number">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Date *</label>
+                        <input type="date" id="date" required name="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time *</label>
+                        <input type="time" id="time" required name="time">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guests">Number of Guests </label>
+                        <select id="guests" required  name="Guest">
+                            <option value="">Select...</option>
+                            <option value="1">1 Guest</option>
+                            <option value="2">2 Guests</option>
+                            <option value="3">3 Guests</option>
+                            <option value="4">4 Guests</option>
+                            <option value="5">5 Guests</option>
+                            <option value="6">6 Guests</option>
+                            <option value="7">7 Guests</option>
+                            <option value="8">8 Guests</option>
+                            <option value="more">More than 8</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="occasion">Occasion</label>
+                        <select id="occasion" name="Occasion">
+                            <option value="">Select...</option>
+                            <option value="birthday">Birthday</option>
+                            <option value="anniversary">Anniversary</option>
+                            <option value="business">Business Dinner</option>
+                            <option value="celebration">Celebration</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="requests">Special Requests</label>
+                    <textarea id="requests" placeholder="Dietary restrictions, seating preferences, etc." name="Request"></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">RESERVE TABLE</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- CONTACT PAGE -->
+    <div id="contact" class="page">
+        <div class="contact-page">
+            <h1>Contact Us</h1>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2>Get In Touch</h2>
+
+                    <div class="info-item">
+                        <h3>Location</h3>
+                        <p>Address: No 8 e close</p>
+                        <p>Gonin Gora kaduna,</p>
+                        <p>Kaduna state, Nigeria</p>
+                    </div>
+
+                    <div class="info-item">
+                        <h3>Phone</h3>
+                        <p>+234 905 181 1674<br>
+                            +234 905 181 1674</p>
+                    </div>
+
+                    <div class="info-item">
+                        <h3>Email</h3>
+                        <p>info@Owolabib653@gmail.com<br>
+                            reservations@Owolabib653@gmail.com</p>
+                    </div>
+
+                    <div class="info-item">
+                        <h3>Opening Hours</h3>
+                        <p>Monday - Thursday: 08:00 AM - 10:00 PM<br>
+                            Friday - Saturday: 09:00 AM - 12:00 AM<br>
+                            Sunday: 10:00 AM - 10:00 PM</p>
+                    </div>
+
+                    <div class="info-item">
+                        <h3>Follow Us</h3>
+                        <p>@sisl.ng on Instagram<br>
+                            facebook.com/sisl.ng<br>
+                            @sisl.ng on Twitter</p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31392.016957883257!2d7.371225357055668!3d10.421405614445872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104d37f48dce15fd%3A0xb1d8844e65e7e93!2sE%20Close!5e0!3m2!1sen!2sng!4v1766351849728!5m2!1sen!2sng"
+                        allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SISL Taste Hub</h3>
+                <p>Experience delicious dishes prepared with passion.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a onclick="showPage('home')">Home</a>
+                <a onclick="showPage('menu')">Menu</a>
+                <a onclick="showPage('gallery')">Gallery</a>
+                <a onclick="showPage('reservation')">Reservations</a>
+                <a onclick="showPage('contact')">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>Address: No 8 e close</p>
+                <p>Gonin Gora kaduna,</p>
+                <p>Kaduna state, Nigeria</p>
+                <p>+234 905 181 1674</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <a href="https://x.com/justbBolu2" target="_blank">Instagram</a>
+                <a href="https://x.com/justbBolu2" target="_blank">Facebook</a>
+                <a href="https://x.com/justbBolu2" target="_blank">Twitter</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Sisl Taste Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+            
+            mobileMenu.classList.toggle('active');
+            mobileNavOverlay.classList.toggle('active');
+            
+            if (mobileNavOverlay.classList.contains('active')) {
+                mobileNavBackdrop.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileNavBackdrop.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+            
+            mobileMenu.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            mobileNavBackdrop.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Handle Reservation Form
+        function handleReservation(event) {
+            event.preventDefault();
+
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const guests = document.getElementById('guests').value;
+            const occasion = document.getElementById('occasion').value;
+            const requests = document.getElementById('requests').value;
+
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+
+            // In a real application, this would send data to a server
+            console.log('Reservation Details:', {
+                name: `${firstName} ${lastName}`,
+                email,
+                phone,
+                date,
+                time,
+                guests,
+                occasion,
+                requests
+            });
+
+            // Reset form
+            event.target.reset();
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Set minimum date for reservation to today
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.setAttribute('min', today);
+            }
+        });
+    </script>
+</body>
+
+</html>
+                
